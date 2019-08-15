@@ -2,7 +2,7 @@ version: 2.0
 jobs:
   test:
     docker:
-      - image: python
+      - image: skytt11/codechan
     steps:
       - checkout
       - run:
