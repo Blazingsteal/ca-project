@@ -31,7 +31,7 @@ jobs:
       - run:
           name: Deploy over SSH to test
           command: |
-            ssh ubuntu@104.155.55.149 "docker-come up -d"
+            ssh ubuntu@104.155.55.149 "docker-compose up -d"
 #  deploytoproduction:
 #    machine: true
 #    steps:
