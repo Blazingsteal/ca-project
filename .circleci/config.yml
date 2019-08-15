@@ -1,0 +1,12 @@
+version: 2.0
+jobs:
+  test:
+    docker:
+      - image: kaspermn33/codechan
+    steps:
+      - checkout
+      - run:
+          name: test
+          command: python tests.py
+      - store_test_results:
+          path: build/test-results
