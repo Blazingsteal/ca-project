@@ -41,8 +41,16 @@ jobs:
           name: Deploy over SSH to test
           command: |
             scp docker-compose.yml ubuntu@104.155.55.149:.
-            ssh ubuntu@104.155.55.149 "docker-compose down; docker-compose up -d"
-            # ssh ubuntu@104.155.55.149 "docker pull skytt11/codechan:latest; docker container rm testrun; docker container run --name testrun -d -p 5000:5000 skytt11/codechan"
+            ssh ubuntu@104.155.55.149 "docker-compose down; docker-compose up -d;"
+  testingthetestenvironment:
+    machine: true
+    steps:
+      - run: 
+          name: tesing the app
+          command: |
+            curl -o test.txt 104.155.55.149:5000   
+      - store_test_results:
+          path: test.txt           
   deploytoproduction:
     machine: true
     steps:
@@ -56,7 +64,6 @@ jobs:
           command: |
             scp docker-compose.yml ubuntu@35.241.177.63:.
             ssh ubuntu@35.241.177.63 "docker-compose down; docker-compose up -d"
-            #  ssh ubuntu@35.241.177.63 "docker pull skytt11/codechan:latest; docker container rm productionrun; docker container run --name productionrun -d -p 5000:5000 skytt11/codechan"
 
 workflows:
   version: 2
@@ -69,6 +76,9 @@ workflows:
       - deploytotest:
           requires:
             - package
-      - deploytoproduction:
+      - testingthetestenvironment:
           requires:
             - deploytotest      
+      - deploytoproduction:
+          requires:
+            - testingthetestenvironment      
