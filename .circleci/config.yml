@@ -43,13 +43,15 @@ jobs:
   deploytoproduction:
     machine: true
     steps:
+      - attach_workspace:
+          at: .
       - add_ssh_keys:
-           fingerprints:
-             - "bc:b2:8d:c5:3c:61:9e:44:93:37:a3:2b:cf:36:09:a2"
+          fingerprints:
+            - "bc:b2:8d:c5:3c:61:9e:44:93:37:a3:2b:cf:36:09:a2"
       - run:
-          name: Deploy over SSH to production
+          name: Deploy over SSH to test
           command: |
-            ssh ubuntu@35.241.177.63 "docker pull skytt11/codechan:latest; docker container run -d -p 5000:5000 skytt11/codechan"
+             ssh ubuntu@35.241.177.63 "docker pull skytt11/codechan:latest; docker container run -d -p 5000:5000 skytt11/codechan"
 
 workflows:
   version: 2
