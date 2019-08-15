@@ -37,7 +37,14 @@ jobs:
       - run:
           name: Deploy over SSH to test
           command: |
-            ssh ubuntu@104.155.55.149 "docker-compose up -d"
+#            echo docker-compose.yml  
+            echo 'version: '3'
+            services:
+            codechan:
+            image: skytt11/codechan
+            ports:
+            - 5000:5000' 
+            ssh ubuntu@104.155.55.149 "cat > docker-compose.yml; docker-compose up -d"
 #  deploytoproduction:
 #    machine: true
 #    steps:
