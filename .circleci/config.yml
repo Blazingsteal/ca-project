@@ -22,17 +22,27 @@ jobs:
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
       - run: docker build -t $DOCKER_USER/codechan:$CIRCLE_SHA1 .
       - run: docker push $DOCKER_USER/codechan:$CIRCLE_SHA1        
-  deploy:
+  deploytotest:
     machine: true
     steps:
       - add_ssh_keys:
           fingerprints:
             - "bc:b2:8d:c5:3c:61:9e:44:93:37:a3:2b:cf:36:09:a2"
       - run:
-          name: Deploy over SSH
+          name: Deploy over SSH to test
           command: |
             ssh ubuntu@104.155.55.149 "docker pull skytt11/codechan:latest; docker container run -d skytt11/codechan"
-            
+  deploytoproduction:
+    machine: true
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "bc:b2:8d:c5:3c:61:9e:44:93:37:a3:2b:cf:36:09:a2"
+      - run:
+          name: Deploy over SSH to production
+          command: |
+            ssh ubuntu@35.241.177.63 "docker pull skytt11/codechan:latest; docker container run -d skytt11/codechan"
+
 workflows:
   version: 2
   test-package-deploy:
@@ -41,6 +51,9 @@ workflows:
       - package:
           requires:
             - test
-      - deploy:
+      - deploytotest:
           requires:
             - package
+      - deploytoproduction:
+          requires:
+            - deploytotest      
