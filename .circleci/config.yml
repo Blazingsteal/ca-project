@@ -11,9 +11,9 @@ jobs:
       - store_test_results:
           path: .
       - persist_to_workspace:
-        root: .
-        paths:
-          - .
+          root: .
+          paths:
+            - .
   package:
     machine: true
     steps:
