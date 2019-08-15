@@ -4,12 +4,10 @@ FROM ubuntu:18.04
 
 RUN apt-get update \
         && apt-get install -y \
-        pip, python
+        python python-pip build-essential
 
 COPY . .
 
 RUN pip install -r requirements.txt
-
-EXPOSE 5000
 
 ENTRYPOINT [ "python", "run.py" ]
