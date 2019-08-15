@@ -31,6 +31,7 @@ jobs:
             echo $SSHKEY > sshkey
             chmod 400 sshkey
             ssh -i sshkey ubuntu@104.155.55.149 "docker pull skytt11/codechan:latest; docker container run -d skytt11/codechan"
+            
 workflows:
   version: 2
   test-package-deploy:
