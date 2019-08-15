@@ -2,8 +2,9 @@
 
 FROM circleci/python
 
-COPY . .
+COPY requirements.txt .
 
-RUN pip install -r requirements.txt
+RUN pip install --user -r requirements.txt
+COPY . .
 
 ENTRYPOINT [ "python", "run.py" ]
