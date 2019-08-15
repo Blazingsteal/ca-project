@@ -37,24 +37,19 @@ jobs:
       - run:
           name: Deploy over SSH to test
           command: |
-#            echo docker-compose.yml  
-            echo 'version: '3'
-            services:
-            codechan:
-            image: skytt11/codechan
-            ports:
-            - 5000:5000' 
-            ssh ubuntu@104.155.55.149 "cat > docker-compose.yml; docker-compose up -d"
-#  deploytoproduction:
-#    machine: true
-#    steps:
-#      - add_ssh_keys:
-#          fingerprints:
-#            - "bc:b2:8d:c5:3c:61:9e:44:93:37:a3:2b:cf:36:09:a2"
-#      - run:
-#          name: Deploy over SSH to production
-#          command: |
-#            ssh ubuntu@35.241.177.63 "docker pull skytt11/codechan:latest; docker container run -d skytt11/codechan"
+             ssh ubuntu@104.155.55.149 "docker pull skytt11/codechan:latest; docker container run -d skytt11/codechan"
+            # echo docker-compose.yml  
+            # ssh ubuntu@104.155.55.149 "echo docker-compose.yml > docker-compose.yml; docker-compose up -d"
+ deploytoproduction:
+   machine: true
+   steps:
+     - add_ssh_keys:
+         fingerprints:
+           - "bc:b2:8d:c5:3c:61:9e:44:93:37:a3:2b:cf:36:09:a2"
+     - run:
+         name: Deploy over SSH to production
+         command: |
+           ssh ubuntu@35.241.177.63 "docker pull skytt11/codechan:latest; docker container run -d skytt11/codechan"
 
 workflows:
   version: 2
@@ -67,6 +62,6 @@ workflows:
       - deploytotest:
           requires:
             - package
-#      - deploytoproduction:
-#          requires:
-#            - deploytotest      
+     - deploytoproduction:
+         requires:
+           - deploytotest      
