@@ -1,8 +1,8 @@
 version: 2.0
 jobs:
-  build:
+  test:
     docker:
-      - image: kaspermn33/codechan
+      - image: skytt11/codechan
     steps:
       - checkout
       - run:
@@ -10,3 +10,28 @@ jobs:
           command: python tests.py
       - store_test_results:
           path: .
+  package:
+    machine: true
+    steps:
+      - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - run: docker build -t $DOCKER_USER/myapp:$CIRCLE_SHA1 .
+      - run: docker push $DOCKER_USER/myapp:$CIRCLE_SHA1        
+  deploy:
+    machine: true
+    steps:
+      - run:
+          name: Deploy over SSH
+          command: |
+            ssh codeacsdu ubuntu@104.155.55.149 "docker pull skytt11/codechan:latest"
+            docker container run skytt/codechan
+workflows:
+  version: 2
+  test-package-deploy:
+    jobs:
+      - test
+      - package:
+          requires:
+            - test
+      - deploy:
+          requires:
+            - package
