@@ -62,6 +62,6 @@ workflows:
       - deploytotest:
           requires:
             - package
-     - deploytoproduction:
-         requires:
-           - deploytotest      
+      - deploytoproduction:
+          requires:
+            - deploytotest      
