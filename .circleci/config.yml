@@ -50,7 +50,8 @@ jobs:
           command: |
             curl -o test.txt 104.155.55.149:5000   
       - store_test_results:
-          path: test.txt           
+          path: test.txt
+          detstination: test_results           
   deploytoproduction:
     machine: true
     steps:
