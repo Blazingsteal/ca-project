@@ -10,12 +10,18 @@ jobs:
           command: python tests.py
       - store_test_results:
           path: .
+      - persist_to_workspace:
+        root: .
+        paths:
+          - .
   package:
     machine: true
     steps:
+      - attach_workspace:
+            at: .
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
-      - run: docker build -t $DOCKER_USER/myapp:$CIRCLE_SHA1 .
-      - run: docker push $DOCKER_USER/myapp:$CIRCLE_SHA1        
+      - run: docker build -t $DOCKER_USER/codechan:$CIRCLE_SHA1 .
+      - run: docker push $DOCKER_USER/codechan:$CIRCLE_SHA1        
   deploy:
     machine: true
     steps:
