@@ -37,7 +37,7 @@ jobs:
       - run:
           name: Deploy over SSH to test
           command: |
-             ssh ubuntu@104.155.55.149 "docker pull skytt11/codechan:latest; docker container run -d -p 5000:5000 skytt11/codechan"
+             ssh ubuntu@104.155.55.149 "docker pull skytt11/codechan:latest; docker container rm testrun; docker container run --name testrun -d -p 5000:5000 skytt11/codechan"
             # echo docker-compose.yml  
             # ssh ubuntu@104.155.55.149 "echo docker-compose.yml > docker-compose.yml; docker-compose up -d"
   deploytoproduction:
@@ -51,7 +51,7 @@ jobs:
       - run:
           name: Deploy over SSH to test
           command: |
-             ssh ubuntu@35.241.177.63 "docker pull skytt11/codechan:latest; docker container run -d -p 5000:5000 skytt11/codechan"
+             ssh ubuntu@35.241.177.63 "docker pull skytt11/codechan:latest; docker container rm productionrun; docker container run --name productionrun -d -p 5000:5000 skytt11/codechan"
 
 workflows:
   version: 2
